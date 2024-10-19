@@ -62,6 +62,18 @@ let package = Package(
                 .headerSearchPath("../Sources/cpp"),
                 .headerSearchPath("objc/include")]),
 
+        .target(name: "OpenTimelineIO_interop",
+            dependencies: ["OpenTime_CXX", "OpenTimelineIO_CXX"],
+            path: "Sources",
+            exclude: ["swift", "shims", "objc", "cpp"],
+            sources: ["interop"],
+            cxxSettings: [
+                .headerSearchPath("../OpenTimelineIO/src/deps/Imath/src/Imath"),
+                .headerSearchPath("../Sources/cpp"),
+                .headerSearchPath("objc/include")],
+            swiftSettings: [
+                .interoperabilityMode(.Cxx)]),
+
         // public target
         .target(name: "OpenTimelineIO",
             dependencies: ["OpenTimelineIO_objc"],
