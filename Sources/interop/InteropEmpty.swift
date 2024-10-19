@@ -5,7 +5,7 @@
 // Copyright Contributors to the OpenTimelineIO project
 
 import OpenTime_CXX // this works!
-import OpenTimelineIO_CXX // xxx: error, comment this out for a successful build.
+// import OpenTimelineIO_CXX // xxx: error, comment this out for a successful build.
 
 // this file is to demonstrate problems
 // when utilizing swift/c++ interop, particularly in the import
