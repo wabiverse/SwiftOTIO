@@ -16,7 +16,8 @@ let package = Package(
     products: [
         .library(name: "OpenTime_CXX", targets: ["OpenTime_CXX"]),
         .library(name: "OpenTimelineIO_CXX", targets: ["OpenTimelineIO_CXX"]),
-        .library(name: "OpenTimelineIO", targets: ["OpenTimelineIO"])
+        .library(name: "OpenTimelineIO", targets: ["OpenTimelineIO"]),
+        .library(name: "OpenTime", targets: ["OpenTime"])
     ],
 
     dependencies: [],
@@ -54,7 +55,7 @@ let package = Package(
         .target(name: "OpenTimelineIO_objc",
             dependencies: ["OpenTimelineIO_CXX"],
             path: "Sources",
-            exclude: ["swift", "shims"],
+            exclude: ["swift", "shims", "interop"],
             sources: ["objc"],
             publicHeadersPath: "objc/include",
             cxxSettings: [
@@ -62,23 +63,20 @@ let package = Package(
                 .headerSearchPath("../Sources/cpp"),
                 .headerSearchPath("objc/include")]),
 
-        .target(name: "OpenTimelineIO_interop",
-            dependencies: ["OpenTime_CXX", "OpenTimelineIO_CXX"],
+        // public swift/c++ target
+        .target(name: "OpenTime",
+            dependencies: ["OpenTime_CXX"],
             path: "Sources",
             exclude: ["swift", "shims", "objc", "cpp"],
             sources: ["interop"],
-            cxxSettings: [
-                .headerSearchPath("../OpenTimelineIO/src/deps/Imath/src/Imath"),
-                .headerSearchPath("../Sources/cpp"),
-                .headerSearchPath("objc/include")],
             swiftSettings: [
                 .interoperabilityMode(.Cxx)]),
 
-        // public target
+        // public swift/objc target
         .target(name: "OpenTimelineIO",
             dependencies: ["OpenTimelineIO_objc"],
             path: "Sources",
-            exclude: ["objc", "shims"],
+            exclude: ["objc", "shims", "interop"],
             sources: ["swift"]),
 
         .testTarget(name: "OpenTimelineIOTests",
