@@ -9,9 +9,11 @@ import PackageDescription
 let package = Package(
     name: "OpenTimelineIO",
     platforms: [
-      .macOS(.v10_13),
-      .iOS(.v12),
-      .visionOS(.v1)
+      .macOS(.v14),
+      .visionOS(.v1),
+      .iOS(.v17),
+      .tvOS(.v17),
+      .watchOS(.v10),
     ],
     products: [
         .library(name: "Imath", targets: ["ImathConfig", "Imath"]),
@@ -53,22 +55,24 @@ let package = Package(
             exclude: ["deps", "opentime", "opentimelineview", "py-opentimelineio", "opentimelineio/CORE_VERSION_MAP.last.cpp"],
             publicHeadersPath: "."),
 
-        .target(name: "OpenTimelineIO_objc",
+        // .target(name: "OpenTimelineIO_objc",
+        //     dependencies: ["OpenTimelineIO_CXX"],
+        //     path: "Sources",
+        //     exclude: ["swift", "shims", "interop", "ImathConfig"],
+        //     sources: ["objc"],
+        //     publicHeadersPath: "objc/include",
+        //     cxxSettings: [
+        //         .headerSearchPath("../OpenTimelineIO/src/deps/Imath/src/Imath"),
+        //         .headerSearchPath("objc/include")]),
+
+        .target(name: "OpenTimelineIO_cpp",
             dependencies: ["OpenTimelineIO_CXX"],
-            path: "Sources",
-            exclude: ["swift", "shims", "interop", "ImathConfig"],
-            sources: ["objc"],
-            publicHeadersPath: "objc/include",
-            cxxSettings: [
-                .headerSearchPath("../OpenTimelineIO/src/deps/Imath/src/Imath"),
-                .headerSearchPath("objc/include")]),
+            path: "Sources/cpp"),
 
         // public swift/c++ target
         .target(name: "OpenTimelineIO",
-            dependencies: ["OpenTime_CXX", "OpenTimelineIO_CXX"],
-            path: "Sources",
-            exclude: ["swift", "shims", "objc", "ImathConfig"],
-            sources: ["interop"],
+            dependencies: ["OpenTimelineIO_cpp"],
+            path: "Sources/interop",
             swiftSettings: [
                 .interoperabilityMode(.Cxx)]),
 
