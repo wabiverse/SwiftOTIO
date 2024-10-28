@@ -1,6 +1,6 @@
 //
-//  opentimelineio.m
-//  otio_macos
+//  opentimelineio.cpp
+//  otio_cross_platform
 //
 // SPDX-License-Identifier: Apache-2.0
 // Copyright Contributors to the OpenTimelineIO project
